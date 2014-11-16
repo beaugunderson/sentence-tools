@@ -30,9 +30,7 @@
     "mocha": "^2.0.1"
   },
   "dependencies": {
-    "parse-english": "^0.3.0",
-    "retext": "^0.3.0",
-    "retext-inspect": "^0.3.0",
-    "retext-visit": "^0.2.2"
+    "nlcst-to-string": "^0.1.0",
+    "parse-english": "^0.3.0"
   }
 }
