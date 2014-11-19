@@ -14,8 +14,8 @@ exports.trim = function (sentence) {
 exports.normalizeQuotes = function (text) {
   return text
     .replace(/''|``|’’|‛‛/g, DOUBLE_QUOTE)
-    .replace(/'|‘|’|‛/g, SINGLE_QUOTE)
-    .replace(/"|“|”|„|‟/g, DOUBLE_QUOTE);
+    .replace(/'|‘|’|‚|‛|‹|›/g, SINGLE_QUOTE)
+    .replace(/"|“|”|„|‟|«|»/g, DOUBLE_QUOTE);
 };
 
 exports.compress = function (sentence) {
