@@ -63,25 +63,17 @@ describe('sentence-tools', function () {
 
     it('should tokenize a buffer into sentences', function (done) {
       sentenceTools.tokenize(article, function (err, sentences) {
-        if (err) {
-          return cb(err);
-        }
-
         sentences.should.deep.equal(sentencesFixture);
 
-        done();
+        done(err);
       });
     });
 
     it('should tokenize a string into sentences', function (done) {
       sentenceTools.tokenize(article.toString(), function (err, sentences) {
-        if (err) {
-          return cb(err);
-        }
-
         sentences.should.deep.equal(sentencesFixture);
 
-        done();
+        done(err);
       });
     });
   });
