@@ -29,8 +29,44 @@ exports.stripTrailingPeriod = function (value, cb) {
   cb(null, value.replace(/\.$/, ''));
 };
 
+function findFirst(nodes, type) {
+  var index = -1;
+  var length = nodes.length;
+
+  while (++index < length) {
+    if (nodes[index].type === type) {
+      return nodes[index];
+    }
+  }
+
+  return null;
+}
+
 exports.capitalize = function (value, cb) {
-  cb(null, value.charAt(0).toUpperCase() + value.substring(1));
+  tokenize(value, function (err, nodes) {
+    if (err) {
+      cb(err);
+    } else {
+      var node = findFirst(nodes, 'SentenceNode');
+
+      if (node) {
+        node = findFirst(node.children, 'WordNode');
+
+        if (node) {
+          node = findFirst(node.children, 'TextNode');
+
+          if (node) {
+            node.value = node.value.charAt(0).toUpperCase() +
+              node.value.substring(1);
+          }
+        }
+      }
+
+      cb(null, nlcstToString({
+        'children': nodes
+      }));
+    }
+  });
 };
 
 exports.tokenize = function (value, cb) {

@@ -45,6 +45,28 @@ describe('sentence-tools', function () {
         done(err);
       });
     });
+
+    it('should capitalize the first letter of a sentence when preceded ' +
+      'by an apostrophe',
+      function (done) {
+        sentenceTools.capitalize("'twas the night.", function (err, result) {
+          result.should.equal("'Twas the night.");
+
+          done(err);
+        });
+      }
+    );
+
+    it('should capitalize the first letter of a sentence when preceded ' +
+      'by a quote',
+      function (done) {
+        sentenceTools.capitalize('"is it the night?"', function (err, result) {
+          result.should.equal('"Is it the night?"');
+
+          done(err);
+        });
+      }
+    );
   });
 
   describe('trim', function () {
