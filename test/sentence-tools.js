@@ -27,6 +27,24 @@ describe('sentence-tools', function () {
     });
   });
 
+  describe('stripTrailingPeriod', function () {
+    it('should stripl trailing periods', function (done) {
+      sentenceTools.stripTrailingPeriod('U.S.A., and such.', function (err, result) {
+        result.should.equal("U.S.A., and such");
+
+        done(err);
+      });
+    });
+
+    it('should stripl trailing periods preceding parenthesis', function (done) {
+      sentenceTools.stripTrailingPeriod('N.A.S.A. (and such.)', function (err, result) {
+        result.should.equal("N.A.S.A. (and such)");
+
+        done(err);
+      });
+    });
+  });
+
   describe('compress', function () {
     it('should compress a sentence', function (done) {
       sentenceTools.compress("I don't know... Sounds scary..", function (err, result) {

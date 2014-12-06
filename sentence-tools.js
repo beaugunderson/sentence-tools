@@ -24,9 +24,41 @@ exports.compress = function (value, cb) {
   cb(null, value.replace(/[.]{2,3}/g, '…'));
 };
 
-// TODO: Improve this to know about acronyms
 exports.stripTrailingPeriod = function (value, cb) {
-  cb(null, value.replace(/\.$/, ''));
+  tokenize(value, function (err, nodes) {
+    if (err) {
+      cb(err);
+    } else {
+      var index = -1;
+      var length = nodes.length;
+      var sentence;
+      var sentenceIndex;
+
+      while (++index < length) {
+        if (nodes[index].type === 'SentenceNode') {
+          sentence = nodes[index].children;
+          sentenceIndex = -1;
+
+          /**
+           * Iterate over every `sentence`s children.
+           * Every full-stop NOT part of a word is such
+           * a direct child.
+           * If we find one, ``hide'' its value.
+           */
+
+          while (sentence[++index]) {
+            if (nlcstToString(sentence[index]) === '.') {
+              sentence[index].value = '';
+            }
+          }
+        }
+      }
+
+      cb(null, nlcstToString({
+        'children': nodes
+      }));
+    }
+  });
 };
 
 function findFirst(nodes, type) {
