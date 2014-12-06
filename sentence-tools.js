@@ -2,6 +2,8 @@
 
 var SINGLE_QUOTE = exports.SINGLE_QUOTE = "'";
 var DOUBLE_QUOTE = exports.DOUBLE_QUOTE = '"';
+var tokenize = require('./lib/tokenize.js');
+var nlcstToString = require('nlcst-to-string');
 
 exports.normalizeWhitespace = function (value, cb) {
   cb(null, value.replace(/\s+/g, ' '));
@@ -31,4 +33,19 @@ exports.capitalize = function (value, cb) {
   cb(null, value.charAt(0).toUpperCase() + value.substring(1));
 };
 
-exports.tokenize = require('./lib/tokenize.js');
+exports.tokenize = function (value, cb) {
+  tokenize(value, function (err, results) {
+    if (err) {
+      cb(err)
+    } else {
+      var index = -1;
+      var length = results.length;
+
+      while (++index < length) {
+        results[index] = nlcstToString(results[index]);
+      }
+
+      cb(null, results)
+    }
+  });
+}
