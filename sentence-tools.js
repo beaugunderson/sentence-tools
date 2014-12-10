@@ -44,9 +44,17 @@ exports.stripTrailingPeriod = function (value) {
 };
 
 exports.countWords = function (value) {
-  return _.reduce(tokenize(value), function (sum, node) {
+  return tokenize(value).reduce(function (sum, node) {
     return sum + _.filter(node.children, {type: 'WordNode'}).length;
   }, 0);
+};
+
+exports.lastWord = function (value) {
+  var wordNodes = tokenize(value).reduce(function (wordNodes, node) {
+    return wordNodes.concat(_.filter(node.children, {type: 'WordNode'}));
+  }, []);
+
+  return nlcstToString(_.last(wordNodes));
 };
 
 exports.capitalize = function (value) {

@@ -99,6 +99,27 @@ describe('sentence-tools', function () {
     });
   });
 
+  describe('lastWord', function () {
+    var sentences = [
+      ['Sally sold sea shells, swimmingly .  right?', 'right'],
+      ['meow--meow "meow--(meow, meow)", meow meow!', 'meow'],
+      ['"potent potables"', 'potables'],
+      ['"potent potables!"', 'potables'],
+      ['not ALL snow-men', 'snow-men']
+    ];
+
+    sentences.forEach(function (sentence) {
+      var title = util.format('should find "%s" as last word in "%s"',
+        sentence[1], sentence[0]);
+
+      it(title, function () {
+        var result = sentenceTools.lastWord(sentence[0]);
+
+        result.should.equal(sentence[1]);
+      });
+    });
+  });
+
   describe('tokenize', function () {
     var sentencesFixture = require('./sentences.json');
     var article = fs.readFileSync(path.resolve(__dirname, 'article.txt'));
