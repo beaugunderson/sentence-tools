@@ -4,6 +4,7 @@ var SINGLE_QUOTE = exports.SINGLE_QUOTE = "'";
 var DOUBLE_QUOTE = exports.DOUBLE_QUOTE = '"';
 var tokenize = require('./lib/tokenize.js');
 var nlcstToString = require('nlcst-to-string');
+var _ = require('lodash');
 
 exports.normalizeWhitespace = function (value) {
   return value.replace(/\s+/g, ' ');
@@ -24,50 +25,31 @@ exports.compress = function (value) {
   return value.replace(/[.]{2,3}/g, '…');
 };
 
+function hideFullStop(node) {
+  if (nlcstToString(node) === '.') {
+    node.value = '';
+  }
+}
+
 exports.stripTrailingPeriod = function (value) {
   var nodes = tokenize(value);
 
-  var index = -1;
-  var length = nodes.length;
-  var sentence;
-
-  while (++index < length) {
-    if (nodes[index].type === 'SentenceNode') {
-      sentence = nodes[index].children;
-
-      // Iterate over every `sentence`s children. Every full-stop NOT part of a
-      // word is such a direct child. If we find one, ``hide'' its value.
-      while (sentence[++index]) {
-        if (nlcstToString(sentence[index]) === '.') {
-          sentence[index].value = '';
-        }
-      }
+  nodes.forEach(function (node) {
+    if (node.type === 'SentenceNode') {
+      node.children.forEach(hideFullStop);
     }
-  }
+  });
 
   return nlcstToString({children: nodes});
 };
-
-function findFirst(nodes, type) {
-  var index = -1;
-  var length = nodes.length;
-
-  while (++index < length) {
-    if (nodes[index].type === type) {
-      return nodes[index];
-    }
-  }
-
-  return null;
-}
 
 exports.capitalize = function (value) {
   var nodes = tokenize(value);
   var node;
 
-  if ((node = findFirst(nodes, 'SentenceNode')) &&
-      (node = findFirst(node.children, 'WordNode')) &&
-      (node = findFirst(node.children, 'TextNode'))) {
+  if ((node = _.find(nodes, {type: 'SentenceNode'})) &&
+      (node = _.find(node.children, {type: 'WordNode'})) &&
+      (node = _.find(node.children, {type: 'TextNode'}))) {
     node.value = node.value.charAt(0).toUpperCase() + node.value.substring(1);
   }
 
@@ -75,14 +57,5 @@ exports.capitalize = function (value) {
 };
 
 exports.tokenize = function (value) {
-  var nodes = tokenize(value);
-
-  var index = -1;
-  var length = nodes.length;
-
-  while (++index < length) {
-    nodes[index] = nlcstToString(nodes[index]);
-  }
-
-  return nodes;
+  return tokenize(value).map(nlcstToString);
 };
