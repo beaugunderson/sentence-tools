@@ -5,6 +5,7 @@ require('chai').should();
 var fs = require('fs');
 var path = require('path');
 var sentenceTools = require('..');
+var util = require('util');
 
 describe('sentence-tools', function () {
   describe('normalizeWhitespace', function () {
@@ -77,6 +78,24 @@ describe('sentence-tools', function () {
       var result = sentenceTools.trim('  \t  testing  \t  ');
 
       result.should.equal('testing');
+    });
+  });
+
+  describe('countWords', function () {
+    var sentences = [
+      ['Sally sold sea shells, swimmingly .  right?', 6],
+      ['meow--meow "meow--(meow, meow)", meow meow!', 7]
+    ];
+
+    sentences.forEach(function (sentence) {
+      var title = util.format('should find %d words in "%s"', sentence[1],
+        sentence[0]);
+
+      it(title, function () {
+        var result = sentenceTools.countWords(sentence[0]);
+
+        result.should.equal(sentence[1]);
+      });
     });
   });
 
