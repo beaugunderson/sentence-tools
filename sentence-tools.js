@@ -5,60 +5,47 @@ var DOUBLE_QUOTE = exports.DOUBLE_QUOTE = '"';
 var tokenize = require('./lib/tokenize.js');
 var nlcstToString = require('nlcst-to-string');
 
-exports.normalizeWhitespace = function (value, cb) {
-  cb(null, value.replace(/\s+/g, ' '));
+exports.normalizeWhitespace = function (value) {
+  return value.replace(/\s+/g, ' ');
 };
 
-exports.trim = function (value, cb) {
-  cb(null, value.trim());
+exports.trim = function (value) {
+  return value.trim();
 };
 
-exports.normalizeQuotes = function (value, cb) {
-  cb(null, value
+exports.normalizeQuotes = function (value) {
+  return value
     .replace(/''|``|’’|‛‛/g, DOUBLE_QUOTE)
     .replace(/'|‘|’|‚|‛|‹|›/g, SINGLE_QUOTE)
-    .replace(/"|“|”|„|‟|«|»/g, DOUBLE_QUOTE));
+    .replace(/"|“|”|„|‟|«|»/g, DOUBLE_QUOTE);
 };
 
-exports.compress = function (value, cb) {
-  cb(null, value.replace(/[.]{2,3}/g, '…'));
+exports.compress = function (value) {
+  return value.replace(/[.]{2,3}/g, '…');
 };
 
-exports.stripTrailingPeriod = function (value, cb) {
-  tokenize(value, function (err, nodes) {
-    if (err) {
-      cb(err);
-    } else {
-      var index = -1;
-      var length = nodes.length;
-      var sentence;
-      var sentenceIndex;
+exports.stripTrailingPeriod = function (value) {
+  var nodes = tokenize(value);
 
-      while (++index < length) {
-        if (nodes[index].type === 'SentenceNode') {
-          sentence = nodes[index].children;
-          sentenceIndex = -1;
+  var index = -1;
+  var length = nodes.length;
+  var sentence;
 
-          /**
-           * Iterate over every `sentence`s children.
-           * Every full-stop NOT part of a word is such
-           * a direct child.
-           * If we find one, ``hide'' its value.
-           */
+  while (++index < length) {
+    if (nodes[index].type === 'SentenceNode') {
+      sentence = nodes[index].children;
 
-          while (sentence[++index]) {
-            if (nlcstToString(sentence[index]) === '.') {
-              sentence[index].value = '';
-            }
-          }
+      // Iterate over every `sentence`s children. Every full-stop NOT part of a
+      // word is such a direct child. If we find one, ``hide'' its value.
+      while (sentence[++index]) {
+        if (nlcstToString(sentence[index]) === '.') {
+          sentence[index].value = '';
         }
       }
-
-      cb(null, nlcstToString({
-        'children': nodes
-      }));
     }
-  });
+  }
+
+  return nlcstToString({children: nodes});
 };
 
 function findFirst(nodes, type) {
@@ -74,46 +61,28 @@ function findFirst(nodes, type) {
   return null;
 }
 
-exports.capitalize = function (value, cb) {
-  tokenize(value, function (err, nodes) {
-    if (err) {
-      cb(err);
-    } else {
-      var node = findFirst(nodes, 'SentenceNode');
+exports.capitalize = function (value) {
+  var nodes = tokenize(value);
+  var node;
 
-      if (node) {
-        node = findFirst(node.children, 'WordNode');
+  if ((node = findFirst(nodes, 'SentenceNode')) &&
+      (node = findFirst(node.children, 'WordNode')) &&
+      (node = findFirst(node.children, 'TextNode'))) {
+    node.value = node.value.charAt(0).toUpperCase() + node.value.substring(1);
+  }
 
-        if (node) {
-          node = findFirst(node.children, 'TextNode');
-
-          if (node) {
-            node.value = node.value.charAt(0).toUpperCase() +
-              node.value.substring(1);
-          }
-        }
-      }
-
-      cb(null, nlcstToString({
-        'children': nodes
-      }));
-    }
-  });
+  return nlcstToString({children: nodes});
 };
 
-exports.tokenize = function (value, cb) {
-  tokenize(value, function (err, results) {
-    if (err) {
-      cb(err)
-    } else {
-      var index = -1;
-      var length = results.length;
+exports.tokenize = function (value) {
+  var nodes = tokenize(value);
 
-      while (++index < length) {
-        results[index] = nlcstToString(results[index]);
-      }
+  var index = -1;
+  var length = nodes.length;
 
-      cb(null, results)
-    }
-  });
-}
+  while (++index < length) {
+    nodes[index] = nlcstToString(nodes[index]);
+  }
+
+  return nodes;
+};

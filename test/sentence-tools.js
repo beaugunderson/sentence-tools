@@ -8,92 +8,75 @@ var sentenceTools = require('..');
 
 describe('sentence-tools', function () {
   describe('normalizeWhitespace', function () {
-    it('should normalize whitespace', function (done) {
-      sentenceTools.normalizeWhitespace('I   \nam a \t\t  sentence with  weird   spaces', function (err, result) {
-        result.should.equal('I am a sentence with weird spaces');
+    it('should normalize whitespace', function () {
+      var result = sentenceTools.normalizeWhitespace(
+        'I   \nam a \t\t  sentence with  weird   spaces');
 
-        done(err);
-      });
+      result.should.equal('I am a sentence with weird spaces');
     });
   });
 
   describe('normalizeQuotes', function () {
-    it('should normalize quotes', function (done) {
-      sentenceTools.normalizeQuotes('‘’‛ \'\' `` ’’ “ ” „ ‟', function (err, result) {
-        result.should.equal('\'\'\' " " " " " " "');
+    it('should normalize quotes', function () {
+      var result = sentenceTools.normalizeQuotes('‘’‛ \'\' `` ’’ “ ” „ ‟');
 
-        done(err);
-      });
+      result.should.equal('\'\'\' " " " " " " "');
     });
   });
 
   describe('stripTrailingPeriod', function () {
-    it('should stripl trailing periods', function (done) {
-      sentenceTools.stripTrailingPeriod('U.S.A., and such.', function (err, result) {
-        result.should.equal("U.S.A., and such");
+    it('should stripl trailing periods', function () {
+      var result = sentenceTools.stripTrailingPeriod('U.S.A., and such.');
 
-        done(err);
-      });
+      result.should.equal('U.S.A., and such');
     });
 
-    it('should stripl trailing periods preceding parenthesis', function (done) {
-      sentenceTools.stripTrailingPeriod('N.A.S.A. (and such.)', function (err, result) {
-        result.should.equal("N.A.S.A. (and such)");
+    it('should stripl trailing periods preceding parenthesis', function () {
+      var result = sentenceTools.stripTrailingPeriod('N.A.S.A. (and such.)');
 
-        done(err);
-      });
+      result.should.equal('N.A.S.A. (and such)');
     });
   });
 
   describe('compress', function () {
-    it('should compress a sentence', function (done) {
-      sentenceTools.compress("I don't know... Sounds scary..", function (err, result) {
-        result.should.equal("I don't know… Sounds scary…");
+    it('should compress a sentence', function () {
+      var result = sentenceTools.compress("I don't know... Sounds scary..");
 
-        done(err);
-      });
+      result.should.equal("I don't know… Sounds scary…");
     });
   });
 
   describe('capitalize', function () {
-    it('should capitalize the first letter of a sentence', function (done) {
-      sentenceTools.capitalize('lower case, huh?', function (err, result) {
-        result.should.equal('Lower case, huh?');
+    it('should capitalize the first letter of a sentence', function () {
+      var result = sentenceTools.capitalize('lower case, huh?');
 
-        done(err);
-      });
+      result.should.equal('Lower case, huh?');
     });
 
     it('should capitalize the first letter of a sentence when preceded ' +
       'by an apostrophe',
-      function (done) {
-        sentenceTools.capitalize("'twas the night.", function (err, result) {
-          result.should.equal("'Twas the night.");
+      function () {
+        var result = sentenceTools.capitalize("'twas the night.");
 
-          done(err);
-        });
+        result.should.equal("'Twas the night.");
       }
     );
 
     it('should capitalize the first letter of a sentence when preceded ' +
       'by a quote',
-      function (done) {
-        sentenceTools.capitalize('"is it the night?"', function (err, result) {
-          result.should.equal('"Is it the night?"');
+      function () {
+        var result = sentenceTools.capitalize('"is it the night?"');
 
-          done(err);
-        });
+        result.should.equal('"Is it the night?"');
       }
     );
   });
 
   describe('trim', function () {
-    it('should trim whitespace from a sentence', function (done) {
-      sentenceTools.trim('  \t  testing  \t  ', function (err, result) {
-        result.should.equal('testing');
+    it('should trim whitespace from a sentence', function () {
+      var result = sentenceTools.trim('  \t  testing  \t  ');
 
-        done(err);
-      });
+      result.should.equal('testing');
     });
   });
 
@@ -101,20 +84,16 @@ describe('sentence-tools', function () {
     var sentencesFixture = require('./sentences.json');
     var article = fs.readFileSync(path.resolve(__dirname, 'article.txt'));
 
-    it('should tokenize a buffer into sentences', function (done) {
-      sentenceTools.tokenize(article, function (err, sentences) {
-        sentences.should.deep.equal(sentencesFixture);
+    it('should tokenize a buffer into sentences', function () {
+      var sentences = sentenceTools.tokenize(article);
 
-        done(err);
-      });
+      sentences.should.deep.equal(sentencesFixture);
     });
 
-    it('should tokenize a string into sentences', function (done) {
-      sentenceTools.tokenize(article.toString(), function (err, sentences) {
-        sentences.should.deep.equal(sentencesFixture);
+    it('should tokenize a string into sentences', function () {
+      var sentences = sentenceTools.tokenize(article.toString());
 
-        done(err);
-      });
+      sentences.should.deep.equal(sentencesFixture);
     });
   });
 });
