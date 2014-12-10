@@ -30,7 +30,7 @@
     "mocha": "^2.0.1"
   },
   "dependencies": {
-    "nlcst-to-string": "^0.1.0",
-    "parse-english": "^0.3.0"
+    "nlcst-to-string": "^0.1.4",
+    "parse-english": "^0.4.1"
   }
 }
