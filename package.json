@@ -1,6 +1,6 @@
 {
   "name": "sentence-tools",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Tools for manipulating sentences",
   "main": "sentence-tools.js",
   "directories": {
@@ -20,18 +20,18 @@
     "tokenizing"
   ],
   "author": "Beau Gunderson <beau@beaugunderson.com>",
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/beaugunderson/node-sentence-tools/issues"
   },
   "homepage": "https://github.com/beaugunderson/node-sentence-tools",
   "devDependencies": {
-    "chai": "^1.10.0",
-    "mocha": "^2.0.1"
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5"
   },
   "dependencies": {
-    "lodash": "^2.4.1",
-    "nlcst-to-string": "^0.1.4",
-    "parse-english": "^0.4.1"
+    "lodash": "^3.9.3",
+    "nlcst-to-string": "^0.1.5",
+    "parse-english": "^0.4.3"
   }
 }
