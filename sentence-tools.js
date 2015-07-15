@@ -43,6 +43,14 @@ exports.stripTrailingPeriod = function (value) {
   return nlcstToString({children: nodes});
 };
 
+exports.words = function (value) {
+  var wordNodes = tokenize(value).reduce(function (wordNodes, node) {
+    return wordNodes.concat(_.filter(node.children, {type: 'WordNode'}));
+  }, []);
+
+  return wordNodes.map(nlcstToString);
+};
+
 exports.countWords = function (value) {
   return tokenize(value).reduce(function (sum, node) {
     return sum + _.filter(node.children, {type: 'WordNode'}).length;

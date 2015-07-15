@@ -81,6 +81,30 @@ describe('sentence-tools', function () {
     });
   });
 
+  describe('words', function () {
+    var sentences = [
+      [
+        'Sally sold sea shells, swimmingly .  right?',
+        ['Sally', 'sold', 'sea', 'shells', 'swimmingly', 'right']
+      ],
+      [
+        'meow--meow "meow--(meow, meow)", meow meow!',
+        ['meow', 'meow', 'meow', 'meow', 'meow', 'meow', 'meow']
+      ]
+    ];
+
+    sentences.forEach(function (sentence) {
+      var title = util.format('should find %j words in "%s"', sentence[1],
+        sentence[0]);
+
+      it(title, function () {
+        var result = sentenceTools.words(sentence[0]);
+
+        result.should.deep.equal(sentence[1]);
+      });
+    });
+  });
+
   describe('countWords', function () {
     var sentences = [
       ['Sally sold sea shells, swimmingly .  right?', 6],
