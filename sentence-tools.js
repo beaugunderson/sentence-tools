@@ -40,7 +40,7 @@ exports.stripTrailingPeriod = function (value) {
     }
   });
 
-  return nlcstToString({children: nodes});
+  return nlcstToString({type: 'Parent', children: nodes});
 };
 
 exports.words = function (value) {
@@ -48,7 +48,7 @@ exports.words = function (value) {
     return wordNodes.concat(_.filter(node.children, {type: 'WordNode'}));
   }, []);
 
-  return wordNodes.map(nlcstToString);
+  return wordNodes.map(_.ary(nlcstToString, 1));
 };
 
 exports.countWords = function (value) {
@@ -75,9 +75,9 @@ exports.capitalize = function (value) {
     node.value = node.value.charAt(0).toUpperCase() + node.value.substring(1);
   }
 
-  return nlcstToString({children: nodes});
+  return nlcstToString({type: 'Parent', children: nodes});
 };
 
 exports.tokenize = function (value) {
-  return tokenize(value).map(nlcstToString);
+  return tokenize(value).map(_.ary(nlcstToString, 1));
 };

@@ -26,12 +26,12 @@
   },
   "homepage": "https://github.com/beaugunderson/node-sentence-tools",
   "devDependencies": {
-    "chai": "^3.0.0",
-    "mocha": "^2.2.5"
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
   },
   "dependencies": {
-    "lodash": "^3.9.3",
-    "nlcst-to-string": "^0.1.5",
-    "parse-english": "^0.4.3"
+    "lodash": "^4.17.15",
+    "nlcst-to-string": "^2.0.3",
+    "parse-english": "^4.1.2"
   }
 }
