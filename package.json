@@ -27,11 +27,11 @@
   "homepage": "https://github.com/beaugunderson/node-sentence-tools",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.0"
+    "mocha": "^7.1.1"
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "nlcst-to-string": "^2.0.3",
-    "parse-english": "^4.1.2"
+    "nlcst-to-string": "^2.0.4",
+    "parse-english": "^4.1.3"
   }
 }
